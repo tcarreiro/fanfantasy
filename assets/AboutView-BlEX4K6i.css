@@ -1,0 +1,1 @@
+.main-fader{width:150px;height:150px}.main-fader .loader svg path{transform-origin:center;animation-duration:3s;animation-name:rotate;animation-iteration-count:infinite}@keyframes rotate{0%{transform:rotate(90deg)}to{transform:rotate(450deg)}}.about{display:flex;align-items:center}
