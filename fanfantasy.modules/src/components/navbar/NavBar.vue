@@ -28,6 +28,9 @@
           <li class="header-navigation-link">
             <RouterLink to="/about" @click="changeTab(4)">{{ $t('NAVBAR.NEXT_GEN') }}</RouterLink>
           </li>
+          <li class="header-navigation-link">
+            <RouterLink to="/draft-list" @click="changeTab(5)">{{ $t('NAVBAR.DRAFT_LIST') }}</RouterLink>
+          </li>
         </ul>
       </div>
   </div>

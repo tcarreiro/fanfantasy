@@ -6,7 +6,8 @@ const messages = {
       HOME:"Home",
       STANDINGS:"Standings",
       RANKINGS:"Rankings",
-      NEXT_GEN:"Next Gen Fanfastats"
+      NEXT_GEN:"Next Gen Fanfastats",
+      DRAFT_LIST:"Draft"
     }
   },
   pt: {
@@ -14,7 +15,8 @@ const messages = {
       HOME:"Home",
       STANDINGS:"Classificação",
       RANKINGS:"Rankings",
-      NEXT_GEN:"Next Gen Fanfastats"
+      NEXT_GEN:"Next Gen Fanfastats",
+      DRAFT_LIST:"Draft"
     }
   }
 };
