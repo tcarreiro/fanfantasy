@@ -2,22 +2,25 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
 import DraftListView from '@/views/DraftListView.vue';
+import { REPOSITORY_NAME } from '@/utils/constants';
+
+const basePath = import.meta.env.MODE === '/development' ? REPOSITORY_NAME : "";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/',
+      path:  basePath + '/',
       name: 'home',
       component: HomeView
     },
     {
-      path: '/about',
+      path: basePath + '/about',
       name: 'about',
       component: AboutView
     },
     {
-      path: '/draft-list',
+      path: basePath + '/draft-list',
       name: 'draft-list',
       component: DraftListView
     }

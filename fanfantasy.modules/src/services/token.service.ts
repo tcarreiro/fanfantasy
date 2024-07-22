@@ -2,7 +2,6 @@ import type { KeycloakToken, RefreshTokenResponse } from "@/models/token.model";
 import { useApp } from "@/stores/app";
 import { JWT_INVERVAL_VALIDATION } from "@/utils/constants";
 import { jwtDecode } from "jwt-decode";
-import process from "process";
 import { isMocked } from "./mock/general";
 
 export const isTokenValid = (token: string) => {
@@ -20,7 +19,7 @@ export const getNewToken = async(): Promise<RefreshTokenResponse> => {
 
   // if (isMocked()) return Promise.resolve(getNewTokenMock()); // Em caso de mock
 
-  const baseUrl = process.env.NODE_ENV === "developmentAA" ? `https://ENDEREÇO_DO_REFRESH` : basePath;
+  const baseUrl = import.meta.env.MODE === "development" ? `https://ENDEREÇO_DO_REFRESH` : basePath;
 
   try {
     const response = await fetch(`${baseUrl}/api/token/refresh`);
