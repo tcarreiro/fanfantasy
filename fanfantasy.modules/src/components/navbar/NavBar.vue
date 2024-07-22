@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { RouterLink } from 'vue-router'
   import logo from '@/assets/img/league/fanfantasy.svg'
+import { appBasePath } from '@/router';
 
   const changeTab = (nth:number) => {
     let links = document.querySelectorAll('.header-navigation-link');
@@ -17,19 +18,19 @@
       <div class="header-navigation">
         <ul class="header-navigation-list">
           <li class="header-navigation-link active">
-            <RouterLink to="/" @click="changeTab(1)">{{ $t('NAVBAR.HOME') }}</RouterLink>
+            <RouterLink :to="appBasePath+'/'" @click="changeTab(1)">{{ $t('NAVBAR.HOME') }}</RouterLink>
           </li>
           <li class="header-navigation-link">
-            <RouterLink to="/" @click="changeTab(2)">{{ $t('NAVBAR.STANDINGS') }}</RouterLink>
+            <RouterLink :to="appBasePath+'/'" @click="changeTab(2)">{{ $t('NAVBAR.STANDINGS') }}</RouterLink>
           </li>
           <li class="header-navigation-link">
-            <RouterLink to="/" @click="changeTab(3)">{{ $t('NAVBAR.RANKINGS') }}</RouterLink>
+            <RouterLink :to="appBasePath+'/'" @click="changeTab(3)">{{ $t('NAVBAR.RANKINGS') }}</RouterLink>
           </li>
           <li class="header-navigation-link">
-            <RouterLink to="/about" @click="changeTab(4)">{{ $t('NAVBAR.NEXT_GEN') }}</RouterLink>
+            <RouterLink :to="appBasePath+'/about'" @click="changeTab(4)">{{ $t('NAVBAR.NEXT_GEN') }}</RouterLink>
           </li>
           <li class="header-navigation-link">
-            <RouterLink to="/draft-list" @click="changeTab(5)">{{ $t('NAVBAR.DRAFT_LIST') }}</RouterLink>
+            <RouterLink :to="appBasePath+'/draft-list'" @click="changeTab(5)">{{ $t('NAVBAR.DRAFT_LIST') }}</RouterLink>
           </li>
         </ul>
       </div>
