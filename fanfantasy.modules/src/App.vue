@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import NavBar from '@/components/NavBar/NavBar.vue';
 import MatchStrip from '@/components/MatchStrip/MatchStrip.vue';
+import NavBar from '@/components/navbar/NavBar.vue';
 </script>
 
 <template>

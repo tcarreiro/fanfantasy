@@ -9,6 +9,10 @@ export class DraftListInfo {
   teamLogo: string = "";
   rookie: boolean = false;
 
+  constructor(position: string = "") {
+    this.position = position;
+  }
+
   static fromJSON(json:any): DraftListInfo {
     return Object.assign(new DraftListInfo(), json);
   }

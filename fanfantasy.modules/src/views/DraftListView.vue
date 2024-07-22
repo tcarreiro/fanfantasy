@@ -4,11 +4,18 @@
   import { DraftListInfo } from '@/models/draft-list.model';
   import { getDraftList } from '@/services/fanfantasy.service';
   import { onMounted, ref, type Ref } from 'vue';
-  import faLogo from '@/assets/img/league/nfl-logo.png';
-  import noPicture from '@/assets/img/league/default-player.png';
 
   const data:Ref<Array<DraftListInfo>> = ref([]);
   const loadingData:Ref<boolean> = ref(true);
+
+  const createEmptyEntries = () => {
+    for (let i = 0; i<5; i++) {
+      data.value.push(new DraftListInfo("QB"));
+      data.value.push(new DraftListInfo("RB"));
+      data.value.push(new DraftListInfo("WR"));
+      data.value.push(new DraftListInfo("TE"));
+    }
+  }
 
   onMounted(() => {
     getDraftList(2024)
@@ -17,10 +24,14 @@
         if (player.position === 'FB') return { ...player, position: 'RB' };
         return player;
       });
+      createEmptyEntries();
       data.value.sort((a, b) => {
         if (a.position < b.position) return -1;
         if (a.position > b.position) return 1;
-        return a.fullName.split(" ")[1].localeCompare(b.fullName.split(" ")[1])
+        const aLastName = a.fullName.split(" ")[1] || "";
+        const bLastName = b.fullName.split(" ")[1] || "";
+
+        return aLastName.localeCompare(bLastName)
       });
 
     })

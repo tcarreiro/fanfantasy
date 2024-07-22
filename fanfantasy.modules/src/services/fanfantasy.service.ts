@@ -7,7 +7,8 @@ export const getDraftList = (season:number):Promise<Array<DraftListInfo>> => {
   return isMocked() ? getDraftListMock() :
     getAxios().get(`api/v1/fanfantasy/create-draft-list`, {
       params: {
-        season: season
+        season: season,
+        amount: 400
       }
     });
 

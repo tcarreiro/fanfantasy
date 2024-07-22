@@ -2,12 +2,22 @@
   import { DraftListInfo } from '@/models/draft-list.model';
   import { COLOR_PER_POSITION } from '@/utils/constants';
   import rookieFlag from '@/assets/img/league/rookie_flag.png';
+  import faLogo from '@/assets/img/league/nfl-logo.png';
+  import noPicture from '@/assets/img/league/default-player.png';
 
   type Props = {
     playerData: DraftListInfo;
   }
 
   const props = defineProps<Props>();
+
+  const getTeamLogo = ():string => {
+    return props.playerData.teamLogo === "" ? faLogo : props.playerData.teamLogo;
+  }
+
+  const getPlayerPicture = ():string => {
+    return props.playerData.profilePictureUrl === "" ? noPicture : props.playerData.profilePictureUrl;
+  }
 
   const getPositionalColor = ():string => {
     return COLOR_PER_POSITION[props.playerData.position as keyof typeof COLOR_PER_POSITION];
@@ -28,20 +38,24 @@
     return "";
   }
 
+  const getByeWeek = ():number|string => {
+    return props.playerData.byeWeek>0?props.playerData.byeWeek:"-";
+  }
+
 </script>
 
 <template>
   <div class="player-card">
     <div class="profile-img-wrapper">
-      <img class="team-logo" :src="props.playerData.teamLogo"/>
-      <img class="player-picture" :src="props.playerData.profilePictureUrl"/>
+      <img class="team-logo" :src="getTeamLogo()"/>
+      <img class="player-picture" :src="getPlayerPicture()"/>
       <img v-if="props.playerData.rookie" class="rookie-flag" :src="rookieFlag"/>
     </div>
     <div class="player-info">
       <div class="upper-info" :style="`background-color: ${getPositionalColor()};`">
         <div class="player-position">{{ props.playerData.position }}</div>
         <div class="player-first-name">{{ getFirstName(props.playerData.fullName) }}</div>
-        <div class="team-bye">{{ props.playerData.byeWeek }}</div>
+        <div class="team-bye">{{ getByeWeek() }}</div>
       </div>
       <div :class="`lower-info ${calculateFontSize(props.playerData.fullName)}`">{{ getLastName(props.playerData.fullName) }}</div>
     </div>
