@@ -4,23 +4,23 @@ import AboutView from '@/views/AboutView.vue';
 import DraftListView from '@/views/DraftListView.vue';
 import { REPOSITORY_NAME } from '@/utils/constants';
 
-const basePath = import.meta.env.MODE === '/development' ? REPOSITORY_NAME : "";
+export const appBasePath = import.meta.env.MODE === '/development' ? REPOSITORY_NAME : "";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path:  basePath + '/',
+      path:  appBasePath + '/',
       name: 'home',
       component: HomeView
     },
     {
-      path: basePath + '/about',
+      path: appBasePath + '/about',
       name: 'about',
       component: AboutView
     },
     {
-      path: basePath + '/draft-list',
+      path: appBasePath + '/draft-list',
       name: 'draft-list',
       component: DraftListView
     }
