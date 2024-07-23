@@ -1,4 +1,5 @@
 @import './base.css';
+@import "@flaticon/flaticon-uicons/css/all/all";
 
 #app {
   width: 100%;

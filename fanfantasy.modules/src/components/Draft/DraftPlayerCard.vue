@@ -110,6 +110,7 @@
   font-weight: bold;
   font-size: 24px;
   display: flex;
+  flex:1;
   justify-content: center;
   align-items: center;
   padding: 0px 8px 0px 8px;
@@ -117,6 +118,7 @@
 
 .player-first-name{
   height: 33%;
+  flex:6;
 }
 
 .lower-info {
