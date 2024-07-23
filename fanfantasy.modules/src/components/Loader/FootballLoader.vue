@@ -35,8 +35,8 @@
 
 <style>
 .main-fader{
-  width:150px;
-  height: 150px;
+  width:91px;
+  height: 91px;
   
   .loader {
     svg {

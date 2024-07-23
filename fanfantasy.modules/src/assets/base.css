@@ -25,8 +25,11 @@
   --ff-c-light-blue: #1B48E0;
   --ff-c-off-white: #F3F3F3;
   --ff-c-off-white2: #FAFAFA;
-  --ff-c-light-grey: #323946;
-  --ff-c-dark-grey: #151515;;
+  --ff-c-light-dark-grey: #323946;
+  --ff-c-medium-grey: #858585;
+  --ff-c-lighter-grey: #E5E5E5;
+  --ff-c-dark-grey: #151515;
+  
 }
 
 /* semantic color variables for this project */
@@ -99,4 +102,38 @@ li {
 
 a {
   text-decoration: none;
+}
+
+.a-button {
+  cursor: pointer;
+  display: inline-flex;
+  letter-spacing: 0;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.a-button .without-icon .a-button__label {
+  margin: auto;
+  padding: 0.75rem 1rem;
+}
+
+.a-button:disabled {
+  cursor: default;
+}
+
+.a-button__arrow {
+  background-color: var(--ff-c-off-white);
+  color: var(--ff-c-light-dark-grey);
+  font-size: 30px;
+}
+
+.a-button__arrow:hover {
+  background-color: var(--ff-c-lighter-grey);
+}
+
+.a-button__arrow:disabled {
+  background-color: var(--ff-c-off-white);
+  color: var(--ff-c-medium-grey);
 }
