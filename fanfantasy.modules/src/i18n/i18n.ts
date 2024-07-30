@@ -6,6 +6,7 @@ const messages = {
       HOME:"Home",
       STANDINGS:"Standings",
       RANKINGS:"Rankings",
+      FLATICONS:"FlatIcons",
       NEXT_GEN:"Next Gen Fanfastats",
       DRAFT_LIST:"Draft"
     }
@@ -15,9 +16,29 @@ const messages = {
       HOME:"Home",
       STANDINGS:"Classificação",
       RANKINGS:"Rankings",
+      FLATICONS:"FlatIcons",
       NEXT_GEN:"Next Gen Fanfastats",
       DRAFT_LIST:"Draft"
+    },
+    STANDINGS: {
+      CONFERENCE_NAME: "Fanfas Conference",
+      ALL_TEAMS: "Times",
+      TEAM: "Time",
+      WINS: "V",
+      LOSSES: "D",
+      DRAWS: "E",
+      TOTAL_PERCENT: "PCT",
+      POINTS_FOR: "PF",
+      POINTS_AGAINST: "PC",
+      NET_POINTS: "Saldo",
+      HOME_RECORD: "Mdt",
+      AWAY_RECORD: "Vst",
+      DIVISION_RECORD: "Div",
+      DIVISION_PERCENT: "PCT",
+      STREAK: "Sqc",
+      LAST_FIVE: "Últ. 5"
     }
+
   }
 };
 

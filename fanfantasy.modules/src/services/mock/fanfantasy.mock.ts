@@ -1,5 +1,5 @@
 import type { DraftListInfo } from "@/models/draft-list.model"
-import type { StripTeam } from "@/models/team.model";
+import type { Division, StandingsTeam, StripTeam } from "@/models/team.model";
 
 export const getDraftListMock = async ():Promise<Array<DraftListInfo>> => {
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -150,5 +150,335 @@ export const getCurrentMatchsMock = async ():Promise<Array<StripTeam>> => {
       abbrev: "JAX",
       score: 0.0
     }
-  ])
+  ]);
 };
+
+export const getTeamsInfoMock = async ():Promise<Array<Division>> => {
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  return Promise.resolve([
+    {
+      name: "Divisão 01",
+      teams: [
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+          teamAbbrev: "BUF",
+          teamName: "Buffalo Bills",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 451,
+          PA: 311,
+          netPoints: 451 - 311,
+          homeRecord: "11-6-0",
+          awayRecord: "11-6-0",
+          divRecord: "11-6-0",
+          divPct: (11 / 17),
+          streak: 5,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+          teamAbbrev:"MIA",
+          teamName:"Miami Dolphins",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 496,
+          PA: 391,
+          netPoints: 451 - 311,
+          homeRecord: "11-6-0",
+          awayRecord: "11-6-0",
+          divRecord: "11-6-0",
+          divPct: (11 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+          teamAbbrev:"NYJ",
+          teamName:"New York Jets",
+          wins: 7,
+          losses: 10,
+          draws: 0,
+          totalPct: (7 / 17),
+          PF: 269,
+          PA: 355,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (7 / 17),
+          streak: 1,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+          teamAbbrev:"NE",
+          teamName:"New England Patriots",
+          wins: 4,
+          losses: 13,
+          draws: 0,
+          totalPct: (4 / 17),
+          PF: 236,
+          PA: 366,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (4 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        }
+      ]
+    },
+    {
+      name: "Divisão 02",
+      teams: [
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+          teamAbbrev: "BUF",
+          teamName: "Buffalo Bills",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 451,
+          PA: 311,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (11 / 17),
+          streak: 5,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+          teamAbbrev:"MIA",
+          teamName:"Miami Dolphins",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 496,
+          PA: 391,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (11 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+          teamAbbrev:"NYJ",
+          teamName:"New York Jets",
+          wins: 7,
+          losses: 10,
+          draws: 0,
+          totalPct: (7 / 17),
+          PF: 269,
+          PA: 355,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (7 / 17),
+          streak: 1,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+          teamAbbrev:"NE",
+          teamName:"New England Patriots",
+          wins: 4,
+          losses: 13,
+          draws: 0,
+          totalPct: (4 / 17),
+          PF: 236,
+          PA: 366,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (4 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        }
+      ]
+    },
+    {
+      name: "Divisão 03",
+      teams: [
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+          teamAbbrev: "BUF",
+          teamName: "Buffalo Bills",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 451,
+          PA: 311,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (11 / 17),
+          streak: 5,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+          teamAbbrev:"MIA",
+          teamName:"Miami Dolphins",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 496,
+          PA: 391,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (11 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+          teamAbbrev:"NYJ",
+          teamName:"New York Jets",
+          wins: 7,
+          losses: 10,
+          draws: 0,
+          totalPct: (7 / 17),
+          PF: 269,
+          PA: 355,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (7 / 17),
+          streak: 1,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+          teamAbbrev:"NE",
+          teamName:"New England Patriots",
+          wins: 4,
+          losses: 13,
+          draws: 0,
+          totalPct: (4 / 17),
+          PF: 236,
+          PA: 366,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (4 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        }
+      ]
+    },
+    {
+      name: "Divisão 04",
+      teams: [
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/buf.png",
+          teamAbbrev: "BUF",
+          teamName: "Buffalo Bills",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 451,
+          PA: 311,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (11 / 17),
+          streak: 5,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/mia.png",
+          teamAbbrev:"MIA",
+          teamName:"Miami Dolphins",
+          wins: 11,
+          losses: 6,
+          draws: 0,
+          totalPct: (11 / 17),
+          PF: 496,
+          PA: 391,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (11 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/nyj.png",
+          teamAbbrev:"NYJ",
+          teamName:"New York Jets",
+          wins: 7,
+          losses: 10,
+          draws: 0,
+          totalPct: (7 / 17),
+          PF: 269,
+          PA: 355,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (7 / 17),
+          streak: 1,
+          streakType: "V",
+          lastRecord:"5-0-0"
+        },
+        {
+          teamLogo: "https://a.espncdn.com/i/teamlogos/nfl/500/ne.png",
+          teamAbbrev:"NE",
+          teamName:"New England Patriots",
+          wins: 4,
+          losses: 13,
+          draws: 0,
+          totalPct: (4 / 17),
+          PF: 236,
+          PA: 366,
+          netPoints: 451 - 311,
+          homeRecord: "451 - 311",
+          awayRecord: "451 - 311",
+          divRecord: "451 - 311",
+          divPct: (4 / 17),
+          streak: 2,
+          streakType: "L",
+          lastRecord:"5-0-0"
+        }
+      ]
+    }
+  ]);
+}

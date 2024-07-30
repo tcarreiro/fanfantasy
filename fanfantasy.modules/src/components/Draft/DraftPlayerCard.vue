@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { DraftListInfo } from '@/models/draft-list.model';
   import { COLOR_PER_POSITION } from '@/utils/constants';
+  import fanfantasyLogo from '@/assets/img/league/fanfantasy.svg';
   import rookieFlag from '@/assets/img/league/rookie_flag.png';
   import faLogo from '@/assets/img/league/nfl-logo.png';
   import noPicture from '@/assets/img/league/default-player.png';
@@ -57,7 +58,10 @@
         <div class="player-first-name">{{ getFirstName(props.playerData.fullName) }}</div>
         <div class="team-bye">{{ getByeWeek() }}</div>
       </div>
-      <div :class="`lower-info ${calculateFontSize(props.playerData.fullName)}`">{{ getLastName(props.playerData.fullName) }}</div>
+      <div :class="`lower-info ${calculateFontSize(props.playerData.fullName)}`">
+        {{ getLastName(props.playerData.fullName) }}
+        <img :src="fanfantasyLogo" alt="" class="faded-img"/>
+      </div>
     </div>
   </div>
 </template>
@@ -143,6 +147,13 @@
   display: flex;
   justify-content: center;
   font-size: 34px;
+}
+
+.faded-img {
+  z-index: -1;
+  position: absolute;
+  width: 150px;
+  opacity: .15;
 }
 
 </style>

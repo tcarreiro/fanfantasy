@@ -8,10 +8,10 @@ import NavBar from '@/components/navbar/NavBar.vue';
   <div class="container">
     <MatchStrip />
     <NavBar />
-    <!-- RouterView shows current component -->
-    <div class="content">
+    <div class="main-content">
       <RouterView />
     </div>
+    
   </div>
 </template>
 
@@ -20,6 +20,18 @@ import NavBar from '@/components/navbar/NavBar.vue';
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+/* TODO: mediaquery 1300px por causa da tabela */
+.main-content {
+  display: flex;
+  width: 1250px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 </style>
