@@ -1,35 +1,63 @@
 <script setup lang="ts">
-  import { RouterLink } from 'vue-router'
-  import logo from '@/assets/img/league/fanfantasy.svg'
+  import { RouterLink, useRoute, useRouter } from 'vue-router'
+  import logo from '@/assets/img/league/fanfantasy-cropped.svg'
+  import { pageViews } from '@/router';
+  import { computed, ref, onMounted } from 'vue';
+  import type { Ref } from 'vue';
+
+  const currentIndex: Ref<number> = ref(-1);
+  const router = useRouter();
+  const route = useRoute();
+
+  onMounted(() => {
+    updateCurrentIndex(route.path)
+  });
+
+  const updateCurrentIndex = (path: string) => {
+    const pageIndex = pageViews.findIndex(view => view.path === path);
+    if (pageIndex !== -1) {
+      currentIndex.value = pageIndex;
+      changeTab(pageIndex);
+    } else {
+      console.warn(`Route ${path} not found in pageViews. Redirecting to /home.`);
+      router.push('/');
+    }
+  };
+
+  const getVisiblePageViews = computed(() => {
+    return pageViews.filter(view => view.showOnNavBar);
+  });
 
   const changeTab = (nth:number) => {
     let links = document.querySelectorAll('.header-navigation-link');
     links.forEach(link => {
         link.classList.remove('active');
     });
-    links[nth-1].classList.add('active');
+    links[nth].classList.add('active');
+    currentIndex.value = nth;
   }
+
+  const getPageViewTag = (name) => {
+    return `NAVBAR.${name.toUpperCase().replace(/-/g, '_')}`;
+  }
+
+
 </script>
 
 <template>
   <div class="nav">
-    <img alt="Fanfantasy logo" class="logo" :src=logo width="300" height="200" />
+    <img alt="Fanfantasy logo" class="logo ml-1 mr-1" :src=logo width="100" height="200" />
       <div class="header-navigation">
         <ul class="header-navigation-list">
-          <li class="header-navigation-link active">
-            <RouterLink to="/" @click="changeTab(1)">{{ $t('NAVBAR.HOME') }}</RouterLink>
-          </li>
-          <li class="header-navigation-link">
-            <RouterLink to="/" @click="changeTab(2)">{{ $t('NAVBAR.STANDINGS') }}</RouterLink>
-          </li>
-          <li class="header-navigation-link">
-            <RouterLink to="/" @click="changeTab(3)">{{ $t('NAVBAR.RANKINGS') }}</RouterLink>
-          </li>
-          <li class="header-navigation-link">
-            <RouterLink to="/about" @click="changeTab(4)">{{ $t('NAVBAR.NEXT_GEN') }}</RouterLink>
-          </li>
-          <li class="header-navigation-link">
-            <RouterLink to="/draft-list" @click="changeTab(5)">{{ $t('NAVBAR.DRAFT_LIST') }}</RouterLink>
+          <li
+          v-for="(view, index) in getVisiblePageViews"
+          :key="view.name"
+          class="header-navigation-link"
+          :class="{ active: index === currentIndex }"
+          >
+            <RouterLink :to="view.path" @click="() => changeTab(index)">
+              {{ $t(getPageViewTag(view.name)) }}
+            </RouterLink>
           </li>
         </ul>
       </div>
@@ -37,16 +65,16 @@
   <div class="header-navigation-secondary"></div>
 </template>
 
-<style>
+<style scoped lang="scss">
 .nav {
   color: var(--ff-c-off-white2);
   background-color: var(--ff-c-blue);
+  width: 100%;
   align-items: center;
   height: 64px;
   display: flex;
   position: relative;
   z-index: 10;
-  box-shadow: 0 1px 2px 0 rgba(0,0,0,.47);
   font-family: All-ProSans,Helvetica,Arial,sans-serif;
   font-weight: 500;
 }
@@ -102,7 +130,7 @@
   overflow: auto;
   right: 0;
   z-index: 3;
-  padding: 0 16px 0 96px;
+  padding: 0;
   width: 100%;
   height: 50px;
 }

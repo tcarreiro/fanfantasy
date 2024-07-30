@@ -1,0 +1,392 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --vt-c-white: #ffffff;
+  --vt-c-white-soft: #f8f8f8;
+  --vt-c-white-mute: #f2f2f2;
+
+  --vt-c-black: #181818;
+  --vt-c-black-soft: #222222;
+  --vt-c-black-mute: #282828;
+
+  --vt-c-indigo: #2c3e50;
+
+  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
+  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
+  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
+  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
+
+  --vt-c-text-light-1: var(--vt-c-indigo);
+  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-dark-1: var(--vt-c-white);
+  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+
+  --ff-c-dark-blue: #1f242d;
+  --ff-c-blue: #013369;
+  --ff-c-light-blue: #1B48E0;
+  --ff-c-off-white: #EEEEEE;
+  --ff-c-off-white2: #FAFAFA;
+  --ff-c-lighter-grey: #E5E5E5;
+  --ff-c-medium-grey: #858585;
+  --ff-c-light-dark-grey: #323946;
+  --ff-c-dark-grey: #151515;
+  
+}
+
+/* semantic color variables for this project */
+:root {
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
+
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+
+  --section-gap: 160px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
+
+.mt-0 {
+  margin-top: 0!important;
+}
+
+.mt-1 {
+  margin-top: 0.5rem!important;
+}
+
+.mt-2 {
+  margin-top: 1rem!important;
+}
+
+.mt-3 {
+  margin-top: 2rem!important;
+}
+
+.mt-4 {
+  margin-top: 3.5rem!important;
+}
+
+.mt-5 {
+  margin-top: 5rem!important;
+}
+
+.mt-6 {
+  margin-top: 7.5rem!important;
+}
+
+.mt-7 {
+  margin-top: 8rem!important;
+}
+
+.ml-0 {
+  margin-left: 0!important;
+}
+
+.ml-1 {
+  margin-left: 0.5rem!important;
+}
+
+.ml-2 {
+  margin-left: 1rem!important;
+}
+
+.ml-3 {
+  margin-left: 2rem!important;
+}
+
+.ml-4 {
+  margin-left: 3.5rem!important;
+}
+
+.ml-5 {
+  margin-left: 5rem!important;
+}
+
+.ml-6 {
+  margin-left: 7.5rem!important;
+}
+
+.ml-7 {
+  margin-left: 8rem!important;
+}
+
+.mr-0 {
+  margin-right: 0!important;
+}
+
+.mr-1 {
+  margin-right: 0.5rem!important;
+}
+
+.mr-2 {
+  margin-right: 1rem!important;
+}
+
+.mr-3 {
+  margin-right: 2rem!important;
+}
+
+.mr-4 {
+  margin-right: 3.5rem!important;
+}
+
+.mr-5 {
+  margin-right: 5rem!important;
+}
+
+.mr-6 {
+  margin-right: 7.5rem!important;
+}
+
+.mr-7 {
+  margin-right: 8rem!important;
+}
+
+.mb-0 {
+  margin-bottom: 0!important;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem!important;
+}
+
+.mb-2 {
+  margin-bottom: 1rem!important;
+}
+
+.mb-3 {
+  margin-bottom: 2rem!important;
+}
+
+.mb-4 {
+  margin-bottom: 3.5rem!important;
+}
+
+.mb-5 {
+  margin-bottom: 5rem!important;
+}
+
+.mb-6 {
+  margin-bottom: 7.5rem!important;
+}
+
+.mb-7 {
+  margin-bottom: 8rem!important;
+}
+
+.m-0 {
+  margin: 0!important;
+}
+
+.m-1 {
+  margin: 0.5rem!important;
+}
+
+.m-2 {
+  margin: 1rem!important;
+}
+
+.m-3 {
+  margin: 2rem!important;
+}
+
+.m-4 {
+  margin: 3.5rem!important;
+}
+
+.m-5 {
+  margin: 5rem!important;
+}
+
+.m-6 {
+  margin: 7.5rem!important;
+}
+
+.m-7 {
+  margin: 8rem!important;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+  margin-bottom: 0;
+
+  .col,
+  [class*=col] {
+    box-sizing: border-box;
+  }
+}
+
+.col {
+  flex: 0 0 auto;
+  padding: 0.5rem;
+  
+  &-1 {
+    width: 8.3333%;
+  }
+
+  &-2 {
+    width: 16.6667%;
+  }
+
+  &-3 {
+    width: 25%;
+  }
+
+  &-4 {
+    width: 33.3333%;
+  }
+
+  &-5 {
+    width: 41.6667%;
+  }
+
+  &-6 {
+    width: 50%;
+  }
+
+  &-7 {
+    width: 58.3333%;
+  }
+
+  &-8 {
+    width: 66.6667%;
+  }
+
+  &-9 {
+    width: 75%;
+  }
+
+  &-10 {
+    width: 83.3333%;
+  }
+
+  &-11 {
+    width: 91.6667%;
+  }
+
+  &-12 {
+    width: 100%;
+  }
+
+}
+
+.m-table {
+  border-collapse: collapse;
+  line-height: 1.5;
+  width: 100%;
+}
+
+.m-table tr {
+  height: 40px;
+  text-align: center;
+}
+
+.m-table td,
+.m-table th {
+  border-top: 0;
+  border: 1px solid var(--ff-c-off-white);
+  font-family: All-ProSans, Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  height: 40px;
+  padding: 0 1rem 0;
+}
+
+.m-table td {
+  font-size: 12px;
+  font-family: All-ProSans, Helvetica, Arial, sans-serif;
+  color: var(--ff-c-dark-grey);
+}
+
+.m-table th {
+  color: var(--ff-c-dark-grey);
+  font-size: 13px;
+}
+
+.m-table thead th {
+}
+
+.m-table td:first-child,
+.m-table th:first-child {
+  padding-left: 1rem;
+  border-left: 0;
+}
+
+.m-table td:last-child,
+.m-table th:last-child {
+  padding-right: 1rem;
+  border-right: 0;
+}
+
+
+.a-button {
+  cursor: pointer;
+  display: inline-flex;
+  letter-spacing: 0;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.a-button .without-icon .a-button__label {
+  margin: auto;
+  padding: 0.75rem 1rem;
+}
+
+.a-button:disabled {
+  cursor: default;
+}
+
+.button__arrow {
+  background-color: var(--ff-c-off-white);
+  color: var(--ff-c-light-dark-grey);
+  font-size: 30px;
+}
+
+.button__arrow:hover {
+  background-color: var(--ff-c-lighter-grey);
+}
+
+.button__arrow:disabled {
+  background-color: var(--ff-c-off-white);
+  color: var(--ff-c-medium-grey);
+}
+
+.button__primary {
+  background-color: white;
+  color: var(--ff-c-light-blue);
+  border: 1px solid var(--ff-c-light-blue);
+
+  &__active {
+    background-color: var(--ff-c-light-blue);
+    color: white;
+  }
+}
+
+.button__primary:hover {
+  background-color: var(--ff-c-light-blue);
+  color: white;
+  transition: background-color, color 0.35s ease;
+}
+
+.button__primary:disabled {
+  background-color: var(--ff-c-off-white);
+  color: var(--ff-c-medium-grey);
+}

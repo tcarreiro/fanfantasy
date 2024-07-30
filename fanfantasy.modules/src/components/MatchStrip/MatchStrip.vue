@@ -3,8 +3,7 @@
   import FootballLoader from '../Loader/FootballLoader.vue';
   import SingleMatchPreview from './SingleMatchPreview.vue';
   import type { Ref } from 'vue';
-  import { ref, computed, onUnmounted } from 'vue';
-  import { onMounted } from 'vue';
+  import { ref, computed, onUnmounted, onMounted } from 'vue';
   import { getCurrentMatchs } from '@/services/fanfantasy.service';
 
   const data: Ref<Array<StripTeam>> = ref([]);
@@ -93,7 +92,7 @@
 <template>
   <div v-if="showStrip" class="match-strip">
     <button v-if="totalPages > 1"
-      class="a-button a-button__arrow .without-icon"
+      class="a-button button__arrow .without-icon"
       @click="prevPage"
       :disabled="currentPage === 0"
     >
@@ -111,7 +110,7 @@
       />
     </div>
     <button v-if="totalPages > 1"
-      class="a-button a-button__arrow .without-icon"
+      class="a-button button__arrow .without-icon"
       @click="nextPage"
       :disabled="currentPage === totalPages - 1"
     >

@@ -9,3 +9,11 @@ export const COLOR_PER_POSITION = {
   TE: '#FF00FF',
   DST: '#330033'
 }
+
+export const STANDINGS_MODE_DIVISION = 0;
+
+export const STANDINGS_MODE_LEAGUE = 1;
+
+export const TABLE_SORTING_ASCENDING = -1;
+
+export const TABLE_SORTING_DESCENDING = 1;

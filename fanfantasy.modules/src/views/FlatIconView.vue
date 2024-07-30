@@ -3629,25 +3629,26 @@
   .tables-container {
     display: flex;
     flex-wrap: wrap;
+
+    .icon-table {
+      margin: 10px;
+      border-collapse: collapse;
+      width: 30%;
+    }
+
+    tr {
+      height: 80px;
+    }
+
+    .icon-table th, .icon-table td {
+      border: 1px solid #ddd;
+    }
+
+    .cell {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 20px;
+    }
   }
 
-  .icon-table {
-    margin: 10px;
-    border-collapse: collapse;
-    width: 30%;
-  }
-
-  tr {
-    height: 80px;
-  }
-
-  .icon-table th, .icon-table td {
-    border: 1px solid #ddd;
-  }
-
-  .cell {
-    text-align: center;
-    font-size: 24px;
-    margin-top: 20px;
-  }
 </style>

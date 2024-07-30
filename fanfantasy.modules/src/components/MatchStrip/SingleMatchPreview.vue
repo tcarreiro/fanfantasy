@@ -17,7 +17,7 @@ import type { StripTeam } from '@/models/team.model';
 <template>
   <div class="match-container" @click="emit('onClick')" :style="`width: ${props.width}px;`">
     <div class="top-border"></div>
-    <div class="content">
+    <div class="match-content">
       <div v-for="(team, index) in props.teams" :key="index" class="team-container">
         <div class="strip-team-logo">
           <img class="strip-team-img" :src="team.logo"/>
@@ -30,11 +30,11 @@ import type { StripTeam } from '@/models/team.model';
   </div>
 </template>
 
-<style>
+<style scoped lang="scss">
   .match-container {
     display: flex;
     flex-direction: column;
-    height: 91px;
+    height: 100%;
     border-right: 1px solid grey;
   }
 
@@ -56,7 +56,7 @@ import type { StripTeam } from '@/models/team.model';
     border-bottom: 3px solid blue;
   }
 
-  .content {
+  .match-content {
     display: flex;
     flex-direction: column;
     height: 85px;
