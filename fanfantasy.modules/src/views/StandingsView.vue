@@ -65,7 +65,6 @@ import { generateRandomId } from '@/utils/random';
     </div>
     <StandingsLegend />
   </div>
-<button @click="()=> {console.log(seasonOptions[season]+' / '+stageOptions[leagueStage])}">Check</button>
 </template>
 
 <style scoped lang="scss">
