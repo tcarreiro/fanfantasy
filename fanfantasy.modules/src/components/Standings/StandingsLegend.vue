@@ -2,7 +2,7 @@
 </script>
 
 <template>
-  <div class="legend-container mt-4 mb-4">
+  <div class="legend-container mt-4">
     <div class="left-section">
       <div class="legend-header mt-3 ml-2 mr-2">
         <h2><span>Legenda</span></h2>

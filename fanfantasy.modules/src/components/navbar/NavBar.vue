@@ -103,7 +103,6 @@
 
 .header-navigation-link {
   position: relative;
-  top: var(--nav-items-top-position);
   border-bottom: 2px solid transparent;
 
 }
