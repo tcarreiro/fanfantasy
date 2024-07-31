@@ -1,11 +1,12 @@
 <script setup lang="ts">
-  import type {StandingsTeam} from '@/models/team.model';
+  import type { StandingsTeam } from '@/models/team.model';
   import type { Ref } from 'vue';
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import {TABLE_SORTING_DESCENDING} from '@/utils/constants';
+  import { getPctFromRecord, getRecordString } from '@/utils/records';
   import SortingHeader from '../Basic/Tables/SortingHeader.vue';
   import { useI18n } from 'vue-i18n';
-import { computed } from 'vue';
+  import { compareRecords, compareStrings, compareNumbers } from '@/utils/compares';
   
   type Props = {
     divisionName: string;
@@ -60,14 +61,37 @@ import { computed } from 'vue';
   }
 
   return [...props.teams].sort((a, b) => {
-    const fields = ['teamName', 'wins', 'losses', 'draws', 'totalPct', 'PF', 'PA', 'netPoints', 'homeRecord', 'awayRecord', 'divRecord', 'divPct', 'streak', 'lastRecord'];
+    // which property each column watchs, in order
+    const fields = ['teamName', 'wins', 'losses', 'draws', 'totalRecord', 'PF', 'PA', 'netPoints', 'homeRecord', 'awayRecord', 'divRecord', 'divRecord', 'streak', 'lastRecord'];
     const field = fields[sortedCol.value];
 
-    if (typeof a[field] === 'string') {
-      return a[field].localeCompare(b[field]) * sortedType.value;
+    if (field === 'wins') {
+      console.log("wins")
+      return compareNumbers(a[fields[4]].wins, b[fields[4]].wins) * sortedType.value;
     }
 
-    return (b[field] - a[field]) * sortedType.value;
+    if (field === 'losses') {
+      console.log("losses")
+      return compareNumbers(a[fields[4]].losses, b[fields[4]].losses) * sortedType.value;
+    }
+
+    if (field === 'draws') {
+      console.log("draws")
+      return compareNumbers(a[fields[4]].draws, b[fields[4]].draws) * sortedType.value;
+    }
+
+    if (typeof a[field] === 'string') {
+      console.log("string")
+      return compareStrings(a[field], b[field]) * sortedType.value;
+    }
+    
+    if (typeof a[field] === 'object') {
+      console.log("record")
+      return compareRecords(a[field], b[field]) * sortedType.value;
+    }
+    
+    console.log("number")
+    return compareNumbers(a[field], b[field]) * sortedType.value;
   });
 });
 
@@ -94,19 +118,19 @@ import { computed } from 'vue';
             <img :src="team.teamLogo" alt="" class="standings-team-img mr-1">
             {{ team.teamName }}
           </td>
-          <td :class="getCellSortedStyle(index, 1)" class="border-left">{{ team.wins }}</td>
-          <td :class="getCellSortedStyle(index, 2)">{{ team.losses }}</td>
-          <td :class="getCellSortedStyle(index, 3)">{{ team.draws }}</td>
-          <td :class="getCellSortedStyle(index, 4)">{{ team.totalPct.toFixed(3) }}</td>
+          <td :class="getCellSortedStyle(index, 1)" class="border-left">{{ team.totalRecord.wins }}</td>
+          <td :class="getCellSortedStyle(index, 2)">{{ team.totalRecord.losses }}</td>
+          <td :class="getCellSortedStyle(index, 3)">{{ team.totalRecord.draws }}</td>
+          <td :class="getCellSortedStyle(index, 4)">{{ getPctFromRecord(team.totalRecord) }}</td>
           <td :class="getCellSortedStyle(index, 5)" class="border-left">{{ team.PF }}</td>
           <td :class="getCellSortedStyle(index, 6)">{{ team.PA }}</td>
-          <td :class="getCellSortedStyle(index, 7)">{{ team.PF - team.PA }}</td>
-          <td :class="getCellSortedStyle(index, 8)" class="border-left">{{`${team.homeRecord}`}}</td>
-          <td :class="getCellSortedStyle(index, 9)">{{`${team.awayRecord}`}}</td>
-          <td :class="getCellSortedStyle(index, 10)" class="border-left">{{`${team.divRecord}`}}</td>
-          <td :class="getCellSortedStyle(index, 11)">{{ team.divPct.toFixed(3) }}</td>
+          <td :class="getCellSortedStyle(index, 7)">{{ team.netPoints }}</td>
+          <td :class="getCellSortedStyle(index, 8)" class="border-left">{{ getRecordString(team.homeRecord) }}</td>
+          <td :class="getCellSortedStyle(index, 9)">{{ getRecordString(team.awayRecord) }}</td>
+          <td :class="getCellSortedStyle(index, 10)" class="border-left">{{ getRecordString(team.divRecord) }}</td>
+          <td :class="getCellSortedStyle(index, 11)">{{  getPctFromRecord(team.divRecord) }}</td>
           <td :class="getCellSortedStyle(index, 12)" class="border-left">{{ `${team.streak}${team.streakType}` }}</td>
-          <td :class="getCellSortedStyle(index, 13)">{{`${team.lastRecord}`}}</td>
+          <td :class="getCellSortedStyle(index, 13)">{{ getRecordString(team.lastRecord) }}</td>
         </tr>
       </tbody>
     </table>
