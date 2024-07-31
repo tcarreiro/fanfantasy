@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { StripTeam } from '@/models/team.model';
-  import FootballLoader from '../Loader/FootballLoader.vue';
+  // import FootballLoader from '../Loader/FootballLoader.vue'
+  import FanfantasyLoader from '../Loader/FanfantasyLoader.vue';
   import SingleMatchPreview from './SingleMatchPreview.vue';
   import type { Ref } from 'vue';
   import { ref, computed, onUnmounted, onMounted } from 'vue';
@@ -98,7 +99,8 @@
     >
       <i class="fi fi-rr-angle-small-left"></i>
     </button>
-    <FootballLoader v-if="loadingData" />
+    <!-- <FootballLoader v-if="loadingData" /> -->
+    <FanfantasyLoader v-if="loadingData" />
     <div v-else class="pairs-container">
       <SingleMatchPreview
         v-for="(teamPair, index) in visiblePairs"
