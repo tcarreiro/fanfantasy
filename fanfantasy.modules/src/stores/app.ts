@@ -24,8 +24,8 @@ export type LeagueState = {
 export const useApp = defineStore('fanfantasy-module-app-state', {
   state: (): AppState => ({
     basePath: "",
-    fanfantasyApiUrl: "https://fanfantasy-services.onrender.com",
-    enviroment: "prod"
+    fanfantasyApiUrl: "http://localhost:8081",
+    enviroment: "dev"
   }),
   persist: true,
   actions: {
