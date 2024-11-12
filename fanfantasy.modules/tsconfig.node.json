@@ -8,6 +8,7 @@
     "playwright.config.*",
     "src/**/*",
     "src/**/*.ts",
+    "src/**/*.svg",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue"
@@ -16,6 +17,7 @@
     "node_modules"
   ],
   "compilerOptions": {
+    "lib": ["esnext", "dom"],
     "noImplicitAny": false,
     "allowJs": true,
     "composite": true,
