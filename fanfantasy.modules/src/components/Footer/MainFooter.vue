@@ -1,12 +1,36 @@
 <script setup lang="ts">
+import type { TeamStandings } from '@/models/team.model';
 import type { Ref } from 'vue';
 import { ref } from 'vue';
+import logo from '@/assets/img/league/fanfantasy-cropped.svg'
+import {getTeamsByDivision} from '@/utils/teams';
+import type { LeagueInfo } from '@/models/league.model';
+import fanfantasyLogo from '@/assets/img/league/fanfantasy.svg';
+
+type Props = {
+  teams: Array<TeamStandings>;
+  leagueStatus: LeagueInfo|null;
+}
+
+const props = defineProps<Props>();
 
 const currentIndex: Ref<number> = ref(0);
+const fallbackImages = ref({}); // not found team logos
 
 const setContentIndex = (index:number) => {
   currentIndex.value = index;
 }
+
+const logoImg = (team: TeamStandings) => {
+  return fallbackImages.value[team.teamName] ? fanfantasyLogo : team.logoUrl
+};
+
+const onImageError = (team: TeamStandings) => {
+  fallbackImages.value = {
+    ...fallbackImages.value,
+    [team.teamName]: true
+  };
+};
 
 </script>
 
@@ -26,14 +50,16 @@ const setContentIndex = (index:number) => {
     </ul>
   </div>
   <div class="footer-content mt-3">
-    <!-- <div class="col-2"></div> -->
-    <div class="col-2 footer-content-column" v-for="(teamData, index) in ['Divisão 01', 'Divisão 02', 'Divisão 03', 'Divisão 04']" :key="index">
-      <div class="footer-column-header mb-1">{{ teamData }}</div>
-      <div class="footer-team-logo-container" v-for="(team, index) in ['@/assets/img/league/nfl-logo.png', '@/assets/img/league/nfl-logo.png', '@/assets/img/league/nfl-logo.png', '@/assets/img/league/nfl-logo.png']" :key="index">
-        <img src="@/assets/img/league/nfl-logo.png" alt="" class="footer-team-logo mt-2">
+    <div class="col-2 footer-content-column" v-for="(division, index) in props.leagueStatus?.settings.scheduleSettings.divisions" :key="index">
+      <div class="footer-column-header mb-1">{{ division.divisionName }}</div>
+      <div class="footer-team-logo-container" v-for="(team, teamIndex) in getTeamsByDivision(props.teams, division.divisionId)" :key="teamIndex">
+        <img :src="logoImg(team)"  alt="" class="footer-team-logo mt-2" @error="onImageError(team)">
       </div>
     </div>
-    <!-- <div class="col-2"></div> -->
+  </div>
+  <div class="app-download mt-3"></div>
+  <div class="copyright-disclaimer mt-3">
+    <img alt="Fanfantasy logo" class="logo mt-1" :src=logo width="100" height="200" />
   </div>
 </div>
 </template>
@@ -91,7 +117,7 @@ const setContentIndex = (index:number) => {
   .footer-content {
     display: flex;
     justify-content: space-between;
-    margin: 0 300px;
+    margin: 0 25%;
 
     .footer-content-column {
       display: flex;
@@ -102,11 +128,43 @@ const setContentIndex = (index:number) => {
         width: 100%;
         display: flex;
         justify-content: center;
+        cursor: pointer;
       }
       
       .footer-team-logo {
-        width: 50px;
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+        border-radius: 25%;
       }
+
+      .footer-column-header {
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .app-download {
+    min-height: 70px;
+    border-top: 1px solid var(--ff-c-light-dark-grey);
+  }
+
+  .copyright-disclaimer {
+    min-height: 200px;
+    background-color: var(--ff-c-blue);
+    display: flex;
+    justify-content: center;
+    
+    .logo {
+      font-size: 14px;
+      position: relative;
+      transition: none;
+      z-index: 10;
+      display: block;
+      height: 80px;
+      border: 0;
     }
   }
 }

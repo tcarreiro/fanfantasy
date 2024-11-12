@@ -8,3 +8,8 @@ export const generateRandomId = (length?:number):string => {
   }
   return result;
 }
+
+export const getRandomNumber = (max: number, min?: number): number => {
+  if (!min) min = 0;
+  return Math.floor(Math.random() * (max - min)) + min;
+};

@@ -7,5 +7,5 @@ export const getPctFromRecord = (record: Record):string => {
 }
 
 export const getRecordString = (record: Record):string => {
-  return `${record.wins}-${record.losses}-${record.draws}`;
+  return `${record.wins}-${record.losses}-${record.ties}`;
 }
