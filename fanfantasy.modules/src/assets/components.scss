@@ -1,0 +1,131 @@
+.main-view-header {
+  display: flex;
+  width: 100%;
+  justify-content: left;
+  border-bottom: 1px solid #CCC;
+
+  >h2 {
+    border-bottom: 2px solid var(--ff-c-dark-grey);
+    padding-bottom: 3px;
+    font-size: 20px;
+    font-weight: bold!important;
+  }
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+  margin-bottom: 0;
+
+  .col,
+  [class*=col] {
+    box-sizing: border-box;
+  }
+}
+
+.table-header {
+  text-transform: uppercase;
+  align-items: center;
+  background-color: var(--ff-c-off-white2);
+  -webkit-box-shadow: inset 0 -1px 0 0 var(--ff-c-lighter-grey);
+  box-shadow: inset 0 -1px 0 0 var(--ff-c-lighter-grey);
+  display: flex;
+  height: 48px;
+  padding-left: 16px;
+}
+
+.m-table {
+
+  &--primary {
+    border-collapse: collapse;
+    line-height: 1.5;
+    width: 100%;
+
+    thead {
+      background-color: white;
+      
+      &.--sortable {
+        cursor: pointer;
+      }
+    }
+
+    th {
+      font-size: 13px;
+      min-width: 70px;
+
+      &.sorted-active {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+      
+        i {
+          position: absolute;
+          right: 0;
+          top: 0;
+          color: var(--ff-c-dark-grey);
+          font-size: 16px;
+          cursor: pointer;
+        }
+
+        i:hover {
+          color: #CCC;
+        }
+      }
+
+      &.--strong {
+        font-weight: bold;
+      }
+    }
+
+    td {
+      font-size: 12px;
+    }
+
+    td,
+    th {
+      border-left: 0;
+      border-right: 0;
+      color: var(--ff-c-dark-grey);
+      font-family: All-ProSans, Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      height: 40px;
+    }
+
+    tr {
+      height: 40px;
+      text-align: center;
+      border: 1px solid var(--ff-c-off-white);
+    }
+
+    td:first-child,
+    th:first-child {
+      padding-left: 1rem;
+      border-left: 0;
+    }
+
+    td:last-child,
+    th:last-child {
+      padding-right: 1rem;
+      border-right: 0;
+    }
+
+    .border-left {
+      border-left: 1px solid var(--ff-c-off-white) !important;
+    }
+
+    tbody {
+      .even-row {
+        background-color: white;
+        &__sorted_active {
+          background-color: rgba(0, 0, 0, 0.05) !important;
+        }
+      }
+      
+      .odd-row {
+        background-color: var(--ff-c-off-white2);
+        &__sorted_active {
+          background-color: rgba(0, 0, 0, 0.05) !important;
+        }
+      }
+    }
+  }
+}

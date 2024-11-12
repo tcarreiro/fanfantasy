@@ -3597,6 +3597,7 @@
     "fi-rr-zoom-in",
     "fi-rr-zoom-out"];
 
+  const emit = defineEmits(["changeSeason"]);
   const tableSubsets=()=>{
     const length = iconsTags.length;
     const subsetSize = Math.ceil(length / 3);

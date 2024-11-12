@@ -1,11 +1,12 @@
-export type RefreshTokenResponse = {
-  valid: boolean,
-  expiredAt: Date,
-  auth_time: Date,
-  refresh_token_valid: boolean,
-  session_expiredAt: Date,
-  refresh_token_expiredAt: Date,
-  token: string,
+export type TokenResponse = {
+  accessToken: string,
+  expiresIn: number,
+  refreshExpiresIn: number,
+  refreshToken: string,
+  tokenType: string,
+  notBeforePolicy: number|null,
+  sessionState: string,
+  scope: string,
 }
 
 export type Roles = {
@@ -34,7 +35,7 @@ export type KeycloakToken = {
   sid: string,
   email_verified: boolean,
   name: string,
-  preferred_name: string,
+  preferred_username: string,
   given_name: string,
   family_name: string,
   email: string

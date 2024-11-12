@@ -1,29 +1,51 @@
 <script setup lang="ts">
-import type { StripTeam } from '@/models/team.model';
+import type { StripMatchSummary, StripTeam } from '@/models/team.model';
+import fanfantasyLogo from '@/assets/img/league/fanfantasy.svg';
+import { ref } from 'vue';
 
   type Props = {
     active?: boolean;
     gameId: number;
-    teams: Array<StripTeam>;
+    teams: StripMatchSummary;
     width: number;
   }
 
   const props = defineProps<Props>();
+
+  const fallbackImages = ref({});
+
+  const logoImg = (team: StripTeam) => {
+    return fallbackImages.value[team.abbrev] ? fanfantasyLogo : team.logo
+  };
+
+  const onImageError = (team: StripTeam) => {
+    fallbackImages.value = {
+      ...fallbackImages.value,
+      [team.abbrev]: true
+    };
+  };
 
   const emit = defineEmits(["onClick"]);
 
 </script>
 
 <template>
-  <div class="match-container" @click="emit('onClick')" :style="`width: ${props.width}px;`">
-    <div class="top-border"></div>
+  <div class="match-container" @click="emit('onClick', props.gameId)" :style="`width: ${props.width}px;`">
+    <div v-if="props.teams.started" class="top-border"></div>
     <div class="match-content">
-      <div v-for="(team, index) in props.teams" :key="index" class="team-container">
+      <div class="team-container">
         <div class="strip-team-logo">
-          <img class="strip-team-img" :src="team.logo"/>
+          <img :src="logoImg(props.teams.awayTeam)"  alt="" class="strip-team-img" @error="onImageError(props.teams.awayTeam)">
         </div>
-        <div class="strip-team-abbrev">{{ team.abbrev }}</div>
-        <div class="strip-team-score">{{ team.score.toFixed(1) }}</div>
+        <div class="strip-team-abbrev">{{ props.teams.awayTeam.abbrev }}</div>
+        <div class="strip-team-score">{{ props.teams.awayTeam.score.toFixed(1) }}</div>
+      </div>
+      <div class="team-container">
+        <div class="strip-team-logo">
+          <img :src="logoImg(props.teams.homeTeam)"  alt="" class="strip-team-img" @error="onImageError(props.teams.homeTeam)">
+        </div>
+        <div class="strip-team-abbrev">{{ props.teams.homeTeam.abbrev }}</div>
+        <div class="strip-team-score">{{ props.teams.homeTeam.score.toFixed(1) }}</div>
       </div>
     </div>
     <div class="bottom-border"></div>
@@ -36,6 +58,11 @@ import type { StripTeam } from '@/models/team.model';
     flex-direction: column;
     height: 100%;
     border-right: 1px solid grey;
+    cursor: pointer;
+  }
+
+  .match-container:first-child {
+    border-left: 1px solid grey;
   }
 
   .match-container:hover {
@@ -72,6 +99,9 @@ import type { StripTeam } from '@/models/team.model';
   .strip-team-abbrev,
   .strip-team-score,
   .strip-team-logo {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
     flex: 1;
     display: flex;
     align-items: center;

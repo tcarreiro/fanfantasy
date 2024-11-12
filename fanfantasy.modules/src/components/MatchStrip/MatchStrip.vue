@@ -1,14 +1,15 @@
 <script setup lang="ts">
-  import type { StripTeam } from '@/models/team.model';
-  // import FootballLoader from '../Loader/FootballLoader.vue'
-  import FanfantasyLoader from '../Loader/FanfantasyLoader.vue';
+  import type { StripMatchSummary } from '@/models/team.model';
   import SingleMatchPreview from './SingleMatchPreview.vue';
   import type { Ref } from 'vue';
   import { ref, computed, onUnmounted, onMounted } from 'vue';
-  import { getCurrentMatchs } from '@/services/fanfantasy.service';
 
-  const data: Ref<Array<StripTeam>> = ref([]);
-  const loadingData: Ref<boolean> = ref(true);
+  type Props = {
+    data: Array<StripMatchSummary>;
+  }
+
+  const props = defineProps<Props>();
+
   const currentPage: Ref<number> = ref(0);
   const visibleMatchs: Ref<number> = ref(8);
   const matchupCardWidth: Ref<number> = ref(window.innerWidth);
@@ -17,15 +18,6 @@
 
 
   onMounted(() => {
-    getCurrentMatchs(2024, 1)
-    .then((response: Array<StripTeam>) => {
-      data.value = response;
-    })
-    .catch((error) => console.log(error))
-    .finally(() => {
-      loadingData.value = false;
-    });
-
     window.addEventListener('resize', getCardWidth);
 
     onUnmounted(() => {
@@ -40,7 +32,6 @@
     showStrip.value = true;
 
     if (totalAvailableSpace <= minCardWidth) {
-      console.log("hiding...")
       showStrip.value = false;
       visibleMatchs.value = 0;
       return 0;
@@ -60,15 +51,15 @@
     return Math.max(minCardWidth, Math.min(maxCardWidth, matchupCardWidth.value));
     };
 
-  const getTeamsInPairs = (teams: Array<StripTeam>): Array<Array<StripTeam>> => {
-    const pairs: Array<Array<StripTeam>> = [];
-    for (let i = 0; i < teams.length; i += 2) {
-      pairs.push(teams.slice(i, i + 2));
-    }
-    return pairs;
-  };
+  // const getTeamsInPairs = (teams: Array<StripMatchSummary>): StripMatchSummary => {
+  //   const pairs: Array<StripMatchSummary> = new StripM;
+  //   for (let i = 0; i < teams.length; i += 2) {
+  //     pairs.push(teams.slice(i, i + 2));
+  //   }
+  //   return pairs;
+  // };
 
-  const pairs = computed(() => getTeamsInPairs(data.value));
+  const pairs = computed(() => (props.data as Array<StripMatchSummary>));
   const totalPages = computed(() => Math.ceil(pairs.value.length / visibleMatchs.value));
 
   const visiblePairs = computed(() => {
@@ -99,9 +90,7 @@
     >
       <i class="fi fi-rr-angle-small-left"></i>
     </button>
-    <!-- <FootballLoader v-if="loadingData" /> -->
-    <FanfantasyLoader v-if="loadingData" />
-    <div v-else class="pairs-container">
+    <div class="pairs-container">
       <SingleMatchPreview
         v-for="(teamPair, index) in visiblePairs"
         :key="index"

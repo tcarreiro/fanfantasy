@@ -38,49 +38,11 @@ import { ref } from 'vue';
 </script>
 
 <template>
-  <th :class="`${sortedCol ? 'sorted_active':  ''} ${props.sideBorded ? 'border-left' : ''}`" @click="changeSortedCol()">
-    <div class="content">
-      {{ props.label }}
-      <i v-if="sortedCol" :class="`fi fi-rr-angle-small-${sortedType === TABLE_SORTING_DESCENDING ? 'down' : 'up'}`"></i>
-    </div>
+  <th :class="`${sortedCol ? 'sorted-active':  ''} ${props.sideBorded ? 'border-left' : ''}`" @click="changeSortedCol()">
+    {{ props.label }}
+    <i v-if="sortedCol" :class="`fi fi-rr-angle-small-${sortedType === TABLE_SORTING_DESCENDING ? 'down' : 'up'}`"></i>
   </th>
 </template>
 
 <style scoped lang="scss">
-  th {
-    cursor: pointer;
-    border-left: 0;
-    border-right: 0;
-    min-width: 70px;
-    position: relative;
-  }
-
-  .content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-  }
-
-  .sorted_active {
-    background-color: rgba(0, 0, 0, 0.05) !important;
-    
-    i {
-      position: absolute;
-      right: -13px;
-      top: 0;
-      color: var(--ff-c-dark-grey);
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    i:hover {
-      color: #CCC;
-    }
-  }
-
-  .border-left {
-    border-left: 1px solid var(--ff-c-off-white) !important;
-  }
 </style>

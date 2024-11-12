@@ -10,7 +10,7 @@
   const route = useRoute();
 
   onMounted(() => {
-    updateCurrentIndex(route.path)
+    updateCurrentIndex(route.path);
   });
 
   const updateCurrentIndex = (path: string) => {
@@ -28,6 +28,12 @@
     return pageViews.filter(view => view.showOnNavBar);
   });
 
+  const getSubViews = computed(() => {
+    return pageViews
+      .filter(view => view.index == currentIndex.value)
+      .flatMap(view => view.subviews);
+  });
+
   const changeTab = (nth:number) => {
     let links = document.querySelectorAll('.header-navigation-link');
     links.forEach(link => {
@@ -39,6 +45,10 @@
 
   const getPageViewTag = (name) => {
     return `NAVBAR.${name.toUpperCase().replace(/-/g, '_')}`;
+  }
+
+  const getPageSubViewTag = (name) => {
+    return `NAVBAR_SEC.${name.toUpperCase().replace(/-/g, '_')}`;
   }
 
 
@@ -55,14 +65,26 @@
           class="header-navigation-link"
           :class="{ active: index === currentIndex }"
           >
-            <RouterLink :to="view.path" @click="() => changeTab(index)">
+            <RouterLink :to="view.path" @click="changeTab(index)">
               {{ $t(getPageViewTag(view.name)) }}
             </RouterLink>
           </li>
         </ul>
       </div>
   </div>
-  <div class="header-navigation-secondary"></div>
+  <div class="header-navigation-secondary">
+    <ul class="header-navigation-secondary-list ml-7">
+          <li
+          v-for="(subview, index) in getSubViews"
+          :key="index"
+          class="header-navigation-secondary-link"
+          >
+            <RouterLink :to="subview.path" @click="()=>{}">
+              {{ $t(getPageSubViewTag(subview.name)) }}
+            </RouterLink>
+          </li>
+        </ul>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -103,9 +125,7 @@
 
 .header-navigation-link {
   position: relative;
-  top: var(--nav-items-top-position);
   border-bottom: 2px solid transparent;
-
 }
 
 .header-navigation-list li a {
@@ -133,6 +153,38 @@
   padding: 0;
   width: 100%;
   height: 50px;
+}
+
+.header-navigation-secondary {
+  display: flex;
+  flex-grow: 1;
+  padding: 0;
+  align-items: center;
+}
+
+.header-navigation-secondary-list {
+  display: flex;
+  align-items: center;
+}
+
+.header-navigation-secondary-link {
+  position: relative;
+  border-bottom: 2px solid transparent;
+
+}
+
+.header-navigation-secondary-list li a {
+  margin: 0 8px;
+  font-size: 14px;
+  color: var(--ff-c-dark-grey);
+  padding-bottom: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.header-navigation-secondary-list li:hover a,
+.header-navigation-secondary-list .active a {
+  border-bottom: 2px solid var(--ff-c-dark-grey);
 }
 
 </style>

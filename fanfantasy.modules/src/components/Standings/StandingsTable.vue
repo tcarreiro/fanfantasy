@@ -1,40 +1,46 @@
 <script setup lang="ts">
-  import type { StandingsTeam } from '@/models/team.model';
   import type { Ref } from 'vue';
   import { ref, computed } from 'vue';
   import {TABLE_SORTING_DESCENDING} from '@/utils/constants';
   import { getPctFromRecord, getRecordString } from '@/utils/records';
+  import { roundToDecimal } from '@/utils/math';
   import SortingHeader from '../Basic/Tables/SortingHeader.vue';
   import { useI18n } from 'vue-i18n';
-  import { compareRecords, compareStrings, compareNumbers } from '@/utils/compares';
+  import fanfantasyLogo from '@/assets/img/league/fanfantasy.svg';
+  import { compareStrings, compareNumbers } from '@/utils/compares';
+  import type { Record, TeamStandings } from '@/models/team.model';
+import { useProTeamStore } from '@/stores/app';
   
   type Props = {
     divisionName: string;
-    teams: Array<StandingsTeam>;
+    teams: Array<TeamStandings>;
   }
 
   const props = defineProps<Props>();
+  const {getSelectedSeason} = useProTeamStore();
 
   const { t } = useI18n();
 
   const sortedCol: Ref<number> = ref(4);
   const sortedType: Ref<number> = ref(TABLE_SORTING_DESCENDING);
 
+  const fallbackImages = ref({}); // not found team logos
+
   const divisionHeaderLabel:string[] = [
     props.divisionName.toUpperCase(),
-    t('STANDINGS.WINS'),
-    t('STANDINGS.LOSSES'),
-    t('STANDINGS.DRAWS'),
-    t('STANDINGS.TOTAL_PERCENT'),
-    t('STANDINGS.POINTS_FOR'),
-    t('STANDINGS.POINTS_AGAINST'),
-    t('STANDINGS.NET_POINTS'),
-    t('STANDINGS.HOME_RECORD'),
-    t('STANDINGS.AWAY_RECORD'),
-    t('STANDINGS.DIVISION_RECORD'),
-    t('STANDINGS.DIVISION_PERCENT'),
-    t('STANDINGS.STREAK'),
-    t('STANDINGS.LAST_FIVE')
+    t('STANDINGS.LEGEND.LABEL.WINS'),
+    t('STANDINGS.LEGEND.LABEL.LOSSES'),
+    t('STANDINGS.LEGEND.LABEL.TIES'),
+    t('STANDINGS.LEGEND.LABEL.WINNING_PERC'),
+    t('STANDINGS.LEGEND.LABEL.POINTS_FOR'),
+    t('STANDINGS.LEGEND.LABEL.POINTS_AGAINST'),
+    t('STANDINGS.LEGEND.LABEL.NET_POINTS'),
+    t('STANDINGS.LEGEND.LABEL.HOME_RCD'),
+    t('STANDINGS.LEGEND.LABEL.ROAD_RCD'),
+    t('STANDINGS.LEGEND.LABEL.DIV_RCD'),
+    t('STANDINGS.LEGEND.LABEL.DIV_PERC'),
+    t('STANDINGS.LEGEND.LABEL.STREAK'),
+    t('STANDINGS.LEGEND.LABEL.LAST_FIVE')
   ];
 
   const leftBordedHeader: number[] = [
@@ -60,53 +66,78 @@
     return props.teams;
   }
 
+  // TODO: streak and last5
   return [...props.teams].sort((a, b) => {
-    // which property each column watchs, in order
-    const fields = ['teamName', 'wins', 'losses', 'draws', 'totalRecord', 'PF', 'PA', 'netPoints', 'homeRecord', 'awayRecord', 'divRecord', 'divRecord', 'streak', 'lastRecord'];
+    const fields = ['teamName', 'wins', 'losses', 'ties', 'percentage', 'pointsFor', 'pointsAgainst', 'netPoints', 'home', 'away', 'division', 'division', 'streak', 'last5'];
     const field = fields[sortedCol.value];
 
     if (field === 'wins') {
-      console.log("wins")
-      return compareNumbers(a[fields[4]].wins, b[fields[4]].wins) * sortedType.value;
+      return compareNumbers(a.record.overall.wins, b.record.overall.wins) * sortedType.value;
     }
 
     if (field === 'losses') {
-      console.log("losses")
-      return compareNumbers(a[fields[4]].losses, b[fields[4]].losses) * sortedType.value;
+      return compareNumbers(a.record.overall.losses, b.record.overall.losses) * sortedType.value;
     }
 
-    if (field === 'draws') {
-      console.log("draws")
-      return compareNumbers(a[fields[4]].draws, b[fields[4]].draws) * sortedType.value;
+    if (field === 'ties') {
+      return compareNumbers(a.record.overall.ties, b.record.overall.ties) * sortedType.value;
     }
 
+    if (field === 'netPoints') {
+      return compareNumbers((a.record.overall.pointsFor - a.record.overall.pointsAgainst), (b.record.overall.pointsFor - b.record.overall.pointsAgainst)) * sortedType.value;
+    }
+
+    if (field === 'pointsFor') {
+      return compareNumbers(a.record.overall[field], b.record.overall[field]) * sortedType.value;
+    }
+
+    if (field === 'pointsAgainst') {
+      return compareNumbers(b.record.overall[field], a.record.overall[field]) * sortedType.value;
+    }
+    
+    if (field === 'last5') {
+      return compareNumbers(a.record.overall.percentage, b.record.overall.percentage) * sortedType.value;
+    }
+    
     if (typeof a[field] === 'string') {
-      console.log("string")
       return compareStrings(a[field], b[field]) * sortedType.value;
     }
     
-    if (typeof a[field] === 'object') {
-      console.log("record")
-      return compareRecords(a[field], b[field]) * sortedType.value;
+    if (typeof a.record[field] === 'object') {
+      return compareNumbers(a.record[field].percentage, b.record[field].percentage) * sortedType.value;
     }
     
-    console.log("number")
-    return compareNumbers(a[field], b[field]) * sortedType.value;
+    return compareNumbers(b.playoffSeed, a.playoffSeed) * sortedType.value;
   });
 });
+
+  const getNetPoints = (record:Record):number => {
+    return roundToDecimal((record.pointsFor -  record.pointsAgainst), 1)
+  };
+
+  const logoImg = (team: TeamStandings) => {
+    return fallbackImages.value[team.teamName] ? fanfantasyLogo : team.logoUrl
+  };
+
+  const onImageError = (team: TeamStandings) => {
+    fallbackImages.value = {
+      ...fallbackImages.value,
+      [team.teamName]: true
+    };
+  };
 
 </script>
 
 <template>
   <div class="standings-container mb-2">
-    <table class="m-table">
-      <thead>
+    <table class="m-table--primary">
+      <thead class="--sortable">
         <tr>
           <SortingHeader v-for="(label, index) in divisionHeaderLabel"
-            :key="index" 
+            :key="index"
             :index="index"
-            :active-sorting="sortedCol===index" 
-            :label="label" 
+            :active-sorting="sortedCol===index"
+            :label="label"
             :side-borded="leftBordedHeader.includes(index)"
             @sortChange="setSortCol"
           />
@@ -114,23 +145,23 @@
       </thead>
       <tbody>
         <tr v-for="(team, index) in sortedTeams" :key="index" :class="`${getRowStyle(index)}`">
-          <td :class="getCellSortedStyle(index, 0)" class="text-left standings-team-logo">
-            <img :src="team.teamLogo" alt="" class="standings-team-img mr-1">
+          <td :class="getCellSortedStyle(index, 0)" class="standings-team-logo">
+            <img :src="logoImg(team)"  alt="" class="standings-team-img mr-1" @error="onImageError(team)">
             {{ team.teamName }}
           </td>
-          <td :class="getCellSortedStyle(index, 1)" class="border-left">{{ team.totalRecord.wins }}</td>
-          <td :class="getCellSortedStyle(index, 2)">{{ team.totalRecord.losses }}</td>
-          <td :class="getCellSortedStyle(index, 3)">{{ team.totalRecord.draws }}</td>
-          <td :class="getCellSortedStyle(index, 4)">{{ getPctFromRecord(team.totalRecord) }}</td>
-          <td :class="getCellSortedStyle(index, 5)" class="border-left">{{ team.PF }}</td>
-          <td :class="getCellSortedStyle(index, 6)">{{ team.PA }}</td>
-          <td :class="getCellSortedStyle(index, 7)">{{ team.netPoints }}</td>
-          <td :class="getCellSortedStyle(index, 8)" class="border-left">{{ getRecordString(team.homeRecord) }}</td>
-          <td :class="getCellSortedStyle(index, 9)">{{ getRecordString(team.awayRecord) }}</td>
-          <td :class="getCellSortedStyle(index, 10)" class="border-left">{{ getRecordString(team.divRecord) }}</td>
-          <td :class="getCellSortedStyle(index, 11)">{{  getPctFromRecord(team.divRecord) }}</td>
-          <td :class="getCellSortedStyle(index, 12)" class="border-left">{{ `${team.streak}${team.streakType}` }}</td>
-          <td :class="getCellSortedStyle(index, 13)">{{ getRecordString(team.lastRecord) }}</td>
+          <td :class="getCellSortedStyle(index, 1)" class="border-left">{{ team.record.overall.wins }}</td>
+          <td :class="getCellSortedStyle(index, 2)">{{ team.record.overall.losses }}</td>
+          <td :class="getCellSortedStyle(index, 3)">{{ team.record.overall.ties }}</td>
+          <td :class="getCellSortedStyle(index, 4)">{{ getPctFromRecord(team.record.overall) }}</td>
+          <td :class="getCellSortedStyle(index, 5)" class="border-left">{{ roundToDecimal(team.record.overall.pointsFor, 1) }}</td>
+          <td :class="getCellSortedStyle(index, 6)">{{ roundToDecimal(team.record.overall.pointsAgainst, 1) }}</td>
+          <td :class="getCellSortedStyle(index, 7)">{{ getNetPoints(team.record.overall) }}</td>
+          <td :class="getCellSortedStyle(index, 8)" class="border-left">{{ getRecordString(team.record.home) }}</td>
+          <td :class="getCellSortedStyle(index, 9)">{{ getRecordString(team.record.away) }}</td>
+          <td :class="getCellSortedStyle(index, 10)" class="border-left">{{ getRecordString(team.record.division) }}</td>
+          <td :class="getCellSortedStyle(index, 11)">{{  getPctFromRecord(team.record.division) }}</td>
+          <td :class="getCellSortedStyle(index, 12)" class="border-left">{{ `${team.record.overall.streakLength}${team.record.overall.streakType.substring(0,1)}` }}</td>
+          <td :class="getCellSortedStyle(index, 13)">{{ getRecordString(team.record.overall) }}</td>
         </tr>
       </tbody>
     </table>
@@ -143,57 +174,17 @@
     overflow-x: auto;
     box-sizing: border-box;
 
-    .m-table{
-
-      
-      thead {
-        background-color: white;
-      }
-
-      th {
-        cursor: pointer;
-      }
-
-      td,
-      th {
-        border-left: 0;
-        border-right: 0;
-      }
-
-      .border-left {
-        border-left: 1px solid var(--ff-c-off-white) !important;
-      }
-      
-      tbody {
-        .even-row {
-          background-color: var(--ff-c-off-white2);
-          &__sorted_active {
-            background-color: rgba(0, 0, 0, 0.05) !important;
-          }
-        }
-        
-        .odd-row {
-          background-color: white;
-          &__sorted_active {
-            background-color: rgba(0, 0, 0, 0.05) !important;
-          }
-        }
-        
-      }
-
-      .standings-team-logo {
-        display: flex;
-        align-items: center;
-      }
-
-      .standings-team-img {
-        width: 25px;
-        height: 25px;
-      }
+    .standings-team-logo {
+      display: flex;
+      align-items: center;
+      min-width: 205px;
     }
 
-    .text-left {
-      text-align: left!important;
+    .standings-team-img {
+      width: 28px;
+      height: 28px;
+      object-fit: cover;
+      border-radius: 25%;
     }
   }
 

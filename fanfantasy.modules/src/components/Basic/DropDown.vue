@@ -1,21 +1,23 @@
 <script setup lang="ts">
   import { defineProps } from 'vue';
-  import { defineModel } from 'vue';
 
   type Props = {
     label: string;
     id:string;
-    options: Array<string>;
+    options: Array<string|number>;
     disabled?: boolean;
   }
 
   const props = defineProps<Props>();
+
+  const emit = defineEmits(["changeSelection"]);
 
   const selectedOption = defineModel();
 
   const onSelection = (event: Event) => {
     const target = event.target as HTMLSelectElement;
     selectedOption.value = target.value;
+    emit('changeSelection', target.value);
   }
 
 </script>

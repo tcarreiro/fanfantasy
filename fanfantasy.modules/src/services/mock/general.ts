@@ -1,3 +1,3 @@
-const enableLocalMock = true;
+const isAllMock = false;
 
-export const isMocked = ():boolean => enableLocalMock;
+export const isAllMocked = ():boolean => isAllMock;
