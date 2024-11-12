@@ -1,32 +1,43 @@
 import type { Exception, ExceptionResponse } from "@/models/exception.model";
 import { useApp } from "@/stores/app"
 import axios, { AxiosError, type AxiosResponse, type InternalAxiosRequestConfig } from "axios";
+import { getNewToken, isTokenValid } from "./token.service";
+import { useLoggedUser } from "@/stores/user";
+import { isRefreshingToken, updateIsRefreshingToken } from "@/utils/token";
 
 export const getAxios = () => {
-  const {fanfantasyApiUrl, token} = useApp();
+  const {fanfantasyApiUrl } = useApp();
+  const {loggedUser, token} = useLoggedUser();
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Accept-Language": "pt-BR",
+  };
+  
+  if (loggedUser) {
+    headers["Authorization"] = `Bearer ${token?.accessToken ?? ""}`;
+  }
+  
+  
   const createdAxios = axios.create({
     baseURL: fanfantasyApiUrl,
     timeout: 60000,
-    headers: {
-      "Content-Type": "application/json",
-      // credentials: "include",
-      // "Accept-Language": "pt-BR",
-      // Authorization: `Bearer ${token}`
-    }
+    headers: headers,
+    paramsSerializer: (params) => paramSerializer(params),
   });
-
+  
   createdAxios.interceptors.request.use((config)=> {
     config.params = config.params || {};
     // config.params["customerCode"] = customerCode; // Se quiser deixar um param comum
     return config;
   });
-
-  // createdAxios.interceptors.request.use(handleTokenRefresh);
-
+  
+  if (loggedUser && !isRefreshingToken)
+    createdAxios.interceptors.request.use(handleTokenRefresh);
+  
   createdAxios.interceptors.response.use(getAxiosResponse, handleException);
 
-    return createdAxios;
+  return createdAxios;
 
 };
 
@@ -67,21 +78,26 @@ export const paramSerializer = (params: any) => {
     .join("&");
 };
 
-// const handleTokenRefresh = async (request: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
-//   const {setToken} = useApp();
-//   const currentToken = request.headers?.Authorization;
-//   if (typeof currentToken === "string") {
-//     const onlyToken = currentToken.replace("Bearer ", "");
+const handleTokenRefresh = async (request: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
+  const {token, setToken, refreshUser, removeUser} = useLoggedUser();
+  const currentToken = request.headers?.Authorization;
+  if (typeof currentToken === "string") {
+    const onlyToken = currentToken.replace("Bearer ", "");
 
-//     if (!isTokenValid(onlyToken)) {
-//       try {
-//         const newToken = await getNewToken();
-//         request.headers.Authorization = `Bearer ${newToken}`;
-//         setToken(newToken.token);
-//       } catch(error) {
-//         return Promise.reject();
-//       }
-//     }
-//   }
-//   return request;
-// }
+    if (!isTokenValid(onlyToken)) {
+      try {
+        updateIsRefreshingToken(true);
+        const newToken = await getNewToken(token.refreshToken);
+        request.headers.Authorization = `Bearer ${newToken.accessToken}`;
+        setToken(newToken);
+        refreshUser();
+      } catch(error) {
+        removeUser();
+      }
+    } else {
+      removeUser();
+    }
+  }
+  updateIsRefreshingToken(false);
+  return request;
+}
