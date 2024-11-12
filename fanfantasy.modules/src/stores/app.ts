@@ -1,10 +1,5 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { NFLSchedule, NFLTeam } from '@/models/nfl-team.model';
-import type { KeycloakToken, TokenResponse } from '@/models/token.model';
-import { jwtDecode } from 'jwt-decode';
-import { login } from '@/services/token.service';
-import { decode } from 'punycode';
 
 export type Envs = 'dev'|'local'|'prod';
 
@@ -29,8 +24,8 @@ export type LeagueState = {
 export const useApp = defineStore('fanfantasy-module-app-state', {
   state: (): AppState => ({
     basePath: "",
-    fanfantasyApiUrl: "http://localhost:8081",
-    enviroment: "local"
+    fanfantasyApiUrl: "https://fanfantasy-services.onrender.com",
+    enviroment: "prod"
   }),
   persist: true,
   actions: {
