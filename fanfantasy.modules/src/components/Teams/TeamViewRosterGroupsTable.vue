@@ -62,13 +62,16 @@ import { computed } from 'vue';
   }
 
   const getProSchedule = (proTeamId: number):string => {
-    return formatMatchDate(nflMatchs.value.filter(mt => mt.awayTeamId === proTeamId || mt.homeTeamId === proTeamId )[0].date)
+    const matches:NFLSchedule[] = nflMatchs.value.filter(mt => mt.awayTeamId === proTeamId || mt.homeTeamId === proTeamId);
+    if (!matches.length) return "--";
+    return formatMatchDate(matches[0].date)
   }
 
   const getProScheduleIsHomeTeam = (proTeamId: number):string => {
-    const match:NFLSchedule = nflMatchs.value.filter(mt => mt.awayTeamId === proTeamId || mt.homeTeamId === proTeamId )[0]
-    if (match.homeTeamId===proTeamId) return getProTeamById(match.awayTeamId)?.teamAbbrev!;
-    return `@${getProTeamById(match.homeTeamId)?.teamAbbrev}`;
+    const matches:NFLSchedule[] = nflMatchs.value.filter(mt => mt.awayTeamId === proTeamId || mt.homeTeamId === proTeamId );
+    if (!matches.length) return "*BYE*";
+    if (matches[0].homeTeamId===proTeamId) return getProTeamById(matches[0].awayTeamId)?.teamAbbrev!;
+    return `@${getProTeamById(matches[0].homeTeamId)?.teamAbbrev}`;
   }
 
 </script>

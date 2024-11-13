@@ -4,16 +4,15 @@ import FootballLoader from '@/components/Loader/FootballLoader.vue';
 import TeamViewHeader from '@/components/Teams/TeamViewHeader.vue';
 import TeamViewPlayers from '@/components/Teams/TeamViewPlayers.vue';
 import type { LeagueInfo } from '@/models/league.model';
-import type { NFLSchedule } from '@/models/nfl-team.model';
 import type { Teams, TeamStandings } from '@/models/team.model';
-import { getLeagueStatus, getNFLSchedule, getTeamsInfo } from '@/services/fanfantasy.service';
+import { getLeagueStatus, getTeamsInfo } from '@/services/fanfantasy.service';
 import { useLeagueState, useProTeamStore } from '@/stores/app';
+import { getSeasonOptions, getWeekOptions } from '@/utils/league-state';
 import { generateRandomId } from '@/utils/random';
 import { getDivisionSeed, getTeamByTeamId } from '@/utils/teams';
+import { storeToRefs } from 'pinia';
 import type { Ref } from 'vue';
-import { computed, ref } from 'vue';
-
-  const {setupProTeamsSchedule} = useProTeamStore();
+import { ref, watch } from 'vue';
 
   type Props = {
     teams: Array<TeamStandings>;
@@ -21,39 +20,44 @@ import { computed, ref } from 'vue';
   }
 
   const props = defineProps<Props>();
-  const leagueState = useLeagueState();
-  const teamId:Ref<number> = ref(1);
-  const selectedSeason:Ref<number> = ref(leagueState.getLeagueState().currentSeason);
+
+  const leagueState = storeToRefs(useLeagueState());
+  const proTeamStore = useProTeamStore();
+
   const reacTeams:Ref<Array<TeamStandings>> = ref(props.teams);
   const reacLeagueStatus:Ref<LeagueInfo|null> = ref(props.leagueStatus);
-  const selectedWeek:Ref<number> = ref(leagueState.getLeagueState().currentWeek);
 
   const loadingProSchedule:Ref<boolean> = ref(false);
   const loadingTeamsData:Ref<boolean> = ref(false);
   const loadingLeagueStatus:Ref<boolean> = ref(false);
 
-  const team = computed(() => getTeamByTeamId(reacTeams.value, teamId.value));
-  const teamDivisionSeed = computed(() => getDivisionSeed(reacTeams.value, teamId.value));
+  const team:Ref<TeamStandings> = ref(getTeamByTeamId(reacTeams.value, leagueState.selectedTeamId.value));
+  const teamDivisionSeed:Ref<number> = ref(getDivisionSeed(reacTeams.value, leagueState.selectedTeamId.value));
 
-  const seasonOptions:Ref<Array<number>> = ref(leagueState.getSeasonOptions());
-  const weekOptions:Ref<Array<number>> = ref(leagueState.getWeekOptions(selectedSeason.value));
+  const seasonOptions:Ref<Array<number>> = ref(getSeasonOptions());
+  const weekOptions:Ref<Array<number>> = ref(getWeekOptions());
 
-  const changeSeason = async (option:number) => {
-    selectedSeason.value = (seasonOptions.value[option])
+  watch(() => leagueState.selectedTeamId.value, (newTeamId) => {
+    team.value = getTeamByTeamId(reacTeams.value, newTeamId);
+    teamDivisionSeed.value = getDivisionSeed(reacTeams.value, newTeamId);
+    updateData(leagueState.selectedSeason.value);
+  });
 
+  watch(() => leagueState.selectedSeason.value, (newSeason) => {
+    updateSeasonRelatedData(newSeason);
+  });
+
+  const updateSeasonRelatedData = async(season:number) => {
     loadingProSchedule.value = true;
+    await proTeamStore.getProTeamsSchedule(season);
+    loadingProSchedule.value = false;
+  }
+
+  const updateData = async (season:number) => {
     loadingTeamsData.value = true;
     loadingLeagueStatus.value = true;
 
-    getNFLSchedule(seasonOptions.value[option])
-      .then((response: Array<NFLSchedule>) => {
-        setupProTeamsSchedule(response);
-      })
-      .finally(() => {
-        loadingProSchedule.value = false;
-      });
-
-    getTeamsInfo(seasonOptions.value[option])
+    getTeamsInfo(season)
       .then((response: Teams) => {
         reacTeams.value = response.teams;
       })
@@ -62,7 +66,7 @@ import { computed, ref } from 'vue';
         loadingTeamsData.value = false;
       })
 
-    getLeagueStatus(seasonOptions.value[option])
+    getLeagueStatus(season)
       .then((response: LeagueInfo) => {
         reacLeagueStatus.value = response;
       })
@@ -70,13 +74,18 @@ import { computed, ref } from 'vue';
       .finally(() => {
         loadingLeagueStatus.value = false;
       })
+  }
 
-    weekOptions.value = leagueState.getWeekOptions(seasonOptions.value[option]);
+  const changeSeason = async (option:number) => {
+    leagueState.selectedSeason.value = (seasonOptions.value[option])
+    updateSeasonRelatedData(seasonOptions.value[option]);
+    updateData(seasonOptions.value[option]);
+    weekOptions.value = getWeekOptions();
     changeWeek(0);
   }
   
   const changeWeek = (option:number) => {
-    selectedWeek.value = (weekOptions.value[option])
+    leagueState.selectedWeek.value = (weekOptions.value[option])
   }
 
   const isLoadingAnything = ():boolean => {
@@ -96,7 +105,7 @@ import { computed, ref } from 'vue';
   <FootballLoader v-if="isLoadingAnything()" />
   <div v-else class="main-view-container" >
     <TeamViewHeader :team="team" :leagueStatus="reacLeagueStatus!" :divisionSeed="teamDivisionSeed" />
-    <TeamViewPlayers :team="team" :leagueStatus="reacLeagueStatus!" :week="selectedWeek" :season="selectedSeason" />
+    <TeamViewPlayers :team="team" :leagueStatus="reacLeagueStatus!" :week="leagueState.selectedWeek.value" :season="leagueState.selectedSeason.value" />
   </div>
 
 </template>

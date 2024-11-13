@@ -29,7 +29,7 @@ import { getPositionNameById } from '@/utils/players';
 </script>
 
 <template>
-  <div class="player-tiny-card flex text-align-left">
+  <div class="tiny-player-card flex text-align-left">
     <img :src="getProfilePic()" alt="" class="player-photo mr-1" @error="onImageError()">
     <div>
       <div class="player-upper-info">{{ props.player.fullName }}</div>
@@ -42,7 +42,12 @@ import { getPositionNameById } from '@/utils/players';
 </template>
 
 <style scoped lang="scss">
-  .player-tiny-card {
+  img {
+      image-rendering: crisp-edges; 
+      filter: blur(0.4px);
+  }
+
+  .tiny-player-card {
     align-items: center;
   }
 

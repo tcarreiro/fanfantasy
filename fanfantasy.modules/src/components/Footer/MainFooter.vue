@@ -6,6 +6,7 @@ import logo from '@/assets/img/league/fanfantasy-cropped.svg'
 import {getTeamsByDivision} from '@/utils/teams';
 import type { LeagueInfo } from '@/models/league.model';
 import fanfantasyLogo from '@/assets/img/league/fanfantasy.svg';
+import DivisionFooter from './DivisionFooter.vue';
 
 type Props = {
   teams: Array<TeamStandings>;
@@ -51,11 +52,8 @@ const onImageError = (team: TeamStandings) => {
   </div>
   <div class="footer-content mt-3">
     <div class="col-2 footer-content-column" v-for="(division, index) in props.leagueStatus?.settings.scheduleSettings.divisions" :key="index">
-      <div class="footer-column-header mb-1">{{ division.divisionName }}</div>
-      <div class="footer-team-logo-container" v-for="(team, teamIndex) in getTeamsByDivision(props.teams, division.divisionId)" :key="teamIndex">
-        <img :src="logoImg(team)"  alt="" class="footer-team-logo mt-2" @error="onImageError(team)">
-      </div>
-    </div>
+      <DivisionFooter :teams="props.teams" :division="division"/>
+    </div> 
   </div>
   <div class="app-download mt-3"></div>
   <div class="copyright-disclaimer mt-3">
@@ -123,26 +121,6 @@ const onImageError = (team: TeamStandings) => {
       display: flex;
       flex-direction: column;
       justify-content: center;
-
-      .footer-team-logo-container {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        cursor: pointer;
-      }
-      
-      .footer-team-logo {
-        width: 75px;
-        height: 75px;
-        object-fit: cover;
-        border-radius: 25%;
-      }
-
-      .footer-column-header {
-        font-size: 14px;
-        font-weight: 500;
-        text-transform: uppercase;
-      }
     }
   }
 

@@ -10,8 +10,8 @@
   import { getTeamsByDivision } from '@/utils/teams';
   import FootballLoader from '@/components/Loader/FootballLoader.vue';
 import type { LeagueInfo } from '@/models/league.model';
-import { useLeagueState, useProTeamStore } from '@/stores/app';
 import { getLeagueStatus, getTeamsInfo } from '@/services/fanfantasy.service';
+import { getSeasonOptions } from '@/utils/league-state';
 
   type Props = {
     teams: Array<TeamStandings>;
@@ -19,8 +19,7 @@ import { getLeagueStatus, getTeamsInfo } from '@/services/fanfantasy.service';
   }
 
   const props = defineProps<Props>();
-  const leagueState = useLeagueState();
-  const leagueStage:Ref<number> = ref(0);
+
   const standingsMode:Ref<number> = ref(STANDINGS_MODE_DIVISION);
   const selectedSeason:Ref<number> = ref(2024);
   const teams:Ref<Array<TeamStandings>> = ref(props.teams);
@@ -29,7 +28,7 @@ import { getLeagueStatus, getTeamsInfo } from '@/services/fanfantasy.service';
   const loadingLeagueStatus:Ref<boolean> = ref(false);
 
 
-  const seasonOptions:Ref<Array<number>> = ref(leagueState.getSeasonOptions());
+  const seasonOptions:Ref<Array<number>> = ref(getSeasonOptions());
   const stageOptions:Ref<Array<string>> = ref(['Temporada Regular', 'Playoff']);
 
   const changeSeason = (option:number) => {

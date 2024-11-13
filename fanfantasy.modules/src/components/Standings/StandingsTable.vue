@@ -9,7 +9,8 @@
   import fanfantasyLogo from '@/assets/img/league/fanfantasy.svg';
   import { compareStrings, compareNumbers } from '@/utils/compares';
   import type { Record, TeamStandings } from '@/models/team.model';
-import { useProTeamStore } from '@/stores/app';
+  import { changeTab, getTeamPageView } from '@/utils/route';
+  import { useLeagueState } from '@/stores/app';
   
   type Props = {
     divisionName: string;
@@ -17,9 +18,10 @@ import { useProTeamStore } from '@/stores/app';
   }
 
   const props = defineProps<Props>();
-  const {getSelectedSeason} = useProTeamStore();
 
   const { t } = useI18n();
+
+  const leagueState = useLeagueState();
 
   const sortedCol: Ref<number> = ref(4);
   const sortedType: Ref<number> = ref(TABLE_SORTING_DESCENDING);
@@ -145,10 +147,12 @@ import { useProTeamStore } from '@/stores/app';
       </thead>
       <tbody>
         <tr v-for="(team, index) in sortedTeams" :key="index" :class="`${getRowStyle(index)}`">
-          <td :class="getCellSortedStyle(index, 0)" class="standings-team-logo">
-            <img :src="logoImg(team)"  alt="" class="standings-team-img mr-1" @error="onImageError(team)">
-            {{ team.teamName }}
-          </td>
+          <RouterLink :to="getTeamPageView.path" @click="leagueState.currentViewIndex = changeTab(getTeamPageView.index)">
+            <td :class="getCellSortedStyle(index, 0)" class="standings-team-logo">
+              <img :src="logoImg(team)"  alt="" class="standings-team-img mr-1" @error="onImageError(team)">
+              {{ team.teamName }}
+            </td>
+          </RouterLink>
           <td :class="getCellSortedStyle(index, 1)" class="border-left">{{ team.record.overall.wins }}</td>
           <td :class="getCellSortedStyle(index, 2)">{{ team.record.overall.losses }}</td>
           <td :class="getCellSortedStyle(index, 3)">{{ team.record.overall.ties }}</td>

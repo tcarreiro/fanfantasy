@@ -51,14 +51,6 @@
     return Math.max(minCardWidth, Math.min(maxCardWidth, matchupCardWidth.value));
     };
 
-  // const getTeamsInPairs = (teams: Array<StripMatchSummary>): StripMatchSummary => {
-  //   const pairs: Array<StripMatchSummary> = new StripM;
-  //   for (let i = 0; i < teams.length; i += 2) {
-  //     pairs.push(teams.slice(i, i + 2));
-  //   }
-  //   return pairs;
-  // };
-
   const pairs = computed(() => (props.data as Array<StripMatchSummary>));
   const totalPages = computed(() => Math.ceil(pairs.value.length / visibleMatchs.value));
 

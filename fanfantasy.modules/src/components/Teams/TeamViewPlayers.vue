@@ -22,7 +22,7 @@ import { watch } from 'vue';
   const players:Ref<Array<Player>> = ref([]);
   const sortingRoster:Ref<Boolean> = ref(true);
 
-  watch(() => props.week, (newWeek, oldWeek) => {
+  watch(() => props.week, () => {
     sortingRoster.value = true;
     fetchPlayers();
   });

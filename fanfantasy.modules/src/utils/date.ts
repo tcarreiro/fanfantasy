@@ -13,6 +13,6 @@ export const formatMatchDate = (timestamp:number):string => {
 
 export const getCurrentSeason = ():number => {
   const today = new Date();
-  if ((today.getMonth() == 7 && today.getDay() >= 28) || today.getMonth() >= 8) return today.getFullYear();
+  if ((today.getMonth() == 7 && today.getDay() >= 25) || today.getMonth() >= 8) return today.getFullYear();
   return today.getFullYear()-1;
 }
